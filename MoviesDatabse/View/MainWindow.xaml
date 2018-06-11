@@ -1,0 +1,601 @@
+﻿<Window x:Class="MoviesDatabase.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:MoviesDatabase"
+        xmlns:viewModel="clr-namespace:MoviesDatabase.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:view="clr-namespace:MoviesDatabase.View"
+        mc:Ignorable="d"
+        Title="Movies database" Height="388.996" Width="763.768" Background="#FF96B9B0">
+    <Window.DataContext>
+        <ObjectDataProvider ObjectType="{x:Type viewModel:MainWindowViewModel}">
+            <ObjectDataProvider.ConstructorParameters>
+                <StaticResource ResourceKey="Database"/>
+            </ObjectDataProvider.ConstructorParameters>
+        </ObjectDataProvider>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="PaneTitleStyle" TargetType="DockPanel">
+            <Setter Property="DockPanel.Dock" Value="Top"/>
+            <Setter Property="Margin" Value="2 2 2 1"/>
+
+            <Style.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="DockPanel.Dock" Value="Left"/>
+                </Style>
+
+                <Style TargetType="Button">
+                    <Setter Property="DockPanel.Dock" Value="Right"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                    <Setter Property="Width" Value="Auto"/>
+                    <Setter Property="Padding" Value="5 1 5 1"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+
+        <Style x:Key="PaneListStyle" TargetType="ListView">
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+        <Style x:Key="PaneStyle" TargetType="DockPanel">
+            <Setter Property="Background" Value="#FFE4E4E4"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+        <ItemContainerTemplate x:Key="MovieListItem">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Path=Actor, Converter={view:Converter}}"/>
+                <TextBlock Text=" - "/>
+                <TextBlock Text="{Binding Path=Title}"/>
+            </StackPanel>
+        </ItemContainerTemplate>
+
+        <ItemContainerTemplate x:Key="ActorListItem">
+            <TextBlock Text="{Binding Converter={view:Converter}}"/>
+        </ItemContainerTemplate>
+
+        <ItemContainerTemplate x:Key="GenreListItem">
+            <TextBlock Text="{Binding Path=Name}"/>
+        </ItemContainerTemplate>
+
+        <DataTemplate x:Key="CreateActorView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="Add actor"/>
+                    <Button Command="{Binding Path=AddActor}">
+                        Add
+                    </Button>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        First name:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="FirstName" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Grid.Row="1" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Last name:
+                    </Label>
+
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="LastName" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EditActorView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="Edit actor"/>
+                    <Button Command="{Binding Path=EditActor}">
+                        Confirm
+                    </Button>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        First name:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="FirstName" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Grid.Row="1" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Last name:
+                    </Label>
+
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="LastName" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CreateGenreView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="Add Genre"/>
+                    <Button Command="{Binding Path=AddGenre}">
+                        Add
+                    </Button>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Name:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EditGenreView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="Edit Genre"/>
+                    <Button Command="{Binding Path=EditGenre}">
+                        Confirm
+                    </Button>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Name:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="Name" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CreateMovieView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="Add movie"/>
+                    <Button Command="{Binding Path=AddMovie}">
+                        Add
+                    </Button>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Title:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="Title" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Grid.Row="1" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Release date:
+                    </Label>
+
+                    <DatePicker Grid.Row="1" Grid.Column="1"
+                                HorizontalAlignment="Stretch">
+                        <DatePicker.SelectedDate>
+                            <Binding Path="ReleaseDate"/>
+                        </DatePicker.SelectedDate>
+                    </DatePicker>
+
+                    <Label Grid.Row="2" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Actor:
+                    </Label>
+
+                    <ComboBox Grid.Row="2" Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              SelectedItem="{Binding Path=Actor}"
+                              ItemsSource="{Binding Path=AvailableActors}"
+                              ItemTemplate="{StaticResource ResourceKey=ActorListItem}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Genre:
+                    </Label>
+
+                    <ComboBox Grid.Row="3" Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              SelectedItem="{Binding Path=Genre}"
+                              ItemsSource="{Binding Path=AvailableGenres}"
+                              ItemTemplate="{StaticResource ResourceKey=GenreListItem}"/>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EditMovieView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="Edit movie"/>
+                    <Button Command="{Binding Path=EditMovie}">
+                        Confirm
+                    </Button>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Title:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch">
+                        <TextBox.Text>
+                            <Binding Path="Title" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <view:NonEmptyValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <Label Grid.Row="1" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Release date:
+                    </Label>
+
+                    <DatePicker Grid.Row="1" Grid.Column="1"
+                                HorizontalAlignment="Stretch">
+                        <DatePicker.SelectedDate>
+                            <Binding Path="ReleaseDate"/>
+                        </DatePicker.SelectedDate>
+                    </DatePicker>
+
+                    <Label Grid.Row="2" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Actor:
+                    </Label>
+
+                    <ComboBox Grid.Row="2" Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              SelectedItem="{Binding Path=Actor}"
+                              ItemsSource="{Binding Path=AvailableActors}"
+                              ItemTemplate="{StaticResource ResourceKey=ActorListItem}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Genre:
+                    </Label>
+
+                    <ComboBox Grid.Row="3" Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              SelectedItem="{Binding Path=Genre}"
+                              ItemsSource="{Binding Path=AvailableGenres}"
+                              ItemTemplate="{StaticResource ResourceKey=GenreListItem}"/>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SelectedActorView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="{Binding Path=Actor, Converter={view:Converter}, StringFormat='Actor: {0}'}"/>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <ListView Style="{StaticResource PaneListStyle}"
+                          ItemsSource="{Binding Path=Movies}"
+                          ItemTemplate="{StaticResource ResourceKey=MovieListItem}"/>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SelectedGenreView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="{Binding Path=Genre.Name, StringFormat='Genre: {0}'}"/>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <ListView Style="{StaticResource PaneListStyle}"
+                          ItemsSource="{Binding Path=Movies}"
+                          ItemTemplate="{StaticResource ResourceKey=MovieListItem}"/>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SelectedMovieView">
+            <DockPanel Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock Text="{Binding Path=Movie.Title}"/>
+                </DockPanel>
+                <Separator DockPanel.Dock="Top"/>
+
+                <Grid DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Title:
+                    </Label>
+
+                    <TextBox Grid.Row="0" Grid.Column="1"
+                             HorizontalAlignment="Stretch"
+                             IsReadOnly="True"
+                             Text="{Binding Path=Movie.Title, Mode=OneWay}"/>
+
+                    <Label Grid.Row="1" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Release date:
+                    </Label>
+
+                    <TextBox Grid.Row="1" Grid.Column="1"
+                             HorizontalAlignment="Stretch"
+                             IsReadOnly="True"
+                             Text="{Binding Path=Movie.ReleaseDate, Mode=OneWay, StringFormat=d}"/>
+
+                    <Label Grid.Row="2" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Actor:
+                    </Label>
+
+                    <TextBox Grid.Row="2" Grid.Column="1"
+                             HorizontalAlignment="Stretch"
+                             IsReadOnly="True"
+                             Text="{Binding Path=Movie.Actor, Mode=OneWay, Converter={view:Converter}}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0"
+                           HorizontalAlignment="Right">
+                        Genre:
+                    </Label>
+
+                    <TextBox Grid.Row="3" Grid.Column="1"
+                             HorizontalAlignment="Stretch"
+                             IsReadOnly="True"
+                             Text="{Binding Path=Movie.Genre.Name, Mode=OneWay}"/>
+                </Grid>
+            </DockPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DefaultWindowStateView"/>
+
+        <view:WindowStateTemplateSelector x:Key="WindowStateTemplateSelector"
+                                       CreateActorDataTemplate="{StaticResource ResourceKey=CreateActorView}"
+                                       CreateGenreDataTemplate="{StaticResource ResourceKey=CreateGenreView}"
+                                       CreateMovieDataTemplate="{StaticResource ResourceKey=CreateMovieView}"
+                                       EditActorDataTemplate="{StaticResource ResourceKey=EditActorView}"
+                                       EditGenreDataTemplate="{StaticResource ResourceKey=EditGenreView}"
+                                       EditMovieDataTemplate="{StaticResource ResourceKey=EditMovieView}"
+                                       SelectedActorDataTemplate="{StaticResource ResourceKey=SelectedActorView}"
+                                       SelectedGenreDataTemplate="{StaticResource ResourceKey=SelectedGenreView}"
+                                       SelectedMovieDataTemplate="{StaticResource ResourceKey=SelectedMovieView}"
+                                       DefaultDataTemplate="{StaticResource ResourceKey=DefaultWindowStateView}"
+                                       />
+    </Window.Resources>
+
+    <Grid Margin="4,0,2,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="141"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="141*"/>
+            <ColumnDefinition Width="610*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0" Margin="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <DockPanel Grid.Column="0"
+                       Grid.Row="0"
+                       Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock>Genre</TextBlock>
+                    <Button Command="{Binding Path=RemoveGenreClicked}">Remove</Button>
+                    <Button Command="{Binding Path=EditGenreClicked}" Margin="0,0,2,0">Edit</Button>
+                    <Button Command="{Binding Path=AddGenreClicked}" Margin="0,0,2,0">Add</Button>
+                </DockPanel>
+
+                <Separator DockPanel.Dock="Top"/>
+
+                <ListView Style="{StaticResource PaneListStyle}"
+                          ItemsSource="{Binding Path=AllGenres}"
+                          SelectedItem="{Binding Path=SelectedGenre}"
+                          ItemTemplate="{StaticResource ResourceKey=GenreListItem}"/>
+            </DockPanel>
+
+            <DockPanel Grid.Column="1"
+                       Grid.Row="0"
+                       Style="{StaticResource PaneStyle}">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock>Actors</TextBlock>
+                    <Button Command="{Binding Path=RemoveActorClicked}">Remove</Button>
+                    <Button Command="{Binding Path=EditActorClicked}" Margin="0,0,2,0">Edit</Button>
+                    <Button Command="{Binding Path=AddActorClicked}" Margin="0,0,2,0">Add</Button>
+                </DockPanel>
+
+                <Separator DockPanel.Dock="Top"/>
+
+                <ListView Style="{StaticResource PaneListStyle}"
+                          ItemsSource="{Binding Path=AllActors}"
+                          SelectedItem="{Binding Path=SelectedActor}"
+                          ItemTemplate="{StaticResource ResourceKey=ActorListItem}"/>
+            </DockPanel>
+
+            <DockPanel Grid.Column="2"
+                       Style="{StaticResource PaneStyle}" Margin="2">
+                <DockPanel Style="{StaticResource PaneTitleStyle}">
+                    <TextBlock>Movies</TextBlock>
+                    <Button Command="{Binding Path=RemoveMovieClicked}">Remove</Button>
+                    <Button Command="{Binding Path=EditMovieClicked}" Margin="0,0,2,0">Edit</Button>
+                    <Button Command="{Binding Path=AddMovieClicked}" Margin="0,0,2,0">Add</Button>
+                </DockPanel>
+
+                <Separator DockPanel.Dock="Top"/>
+
+                <ListView Style="{StaticResource PaneListStyle}"
+                          ItemsSource="{Binding Path=AllMovies}"
+                          SelectedItem="{Binding Path=SelectedMovie}"
+                          ItemTemplate="{StaticResource ResourceKey=MovieListItem}"/>
+            </DockPanel>
+        </Grid>
+        <ContentControl
+            Content="{Binding Path=State}"
+            ContentTemplateSelector="{StaticResource ResourceKey=WindowStateTemplateSelector}" Margin="0" Grid.Row="1" Grid.ColumnSpan="2"/>
+    </Grid>
+</Window>

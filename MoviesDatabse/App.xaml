@@ -1,0 +1,10 @@
+﻿<Application x:Class="MoviesDatabase.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MoviesDatabase"
+             xmlns:model="clr-namespace:MoviesDatabase.Model"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+         <model:Database x:Key="Database"/>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,17 @@
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse.csprojResolveAssemblyReference.cache
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\View\MainWindow.g.cs
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\App.g.cs
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse_MarkupCompile.cache
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse_MarkupCompile.lref
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\bin\Debug\MoviesDatabse.exe.config
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\bin\Debug\MoviesDatabse.exe
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\bin\Debug\MoviesDatabse.pdb
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\App.baml
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\View\MainWindow.baml
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse.g.resources
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabase.Properties.Resources.resources
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse.csproj.GenerateResource.cache
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse.csproj.CoreCompileInputs.cache
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse.exe
+C:\Users\Kacper\Desktop\Studia\pain\MoviesDatabse\MoviesDatabse\obj\Debug\MoviesDatabse.pdb
